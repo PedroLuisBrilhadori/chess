@@ -1,4 +1,5 @@
-import { PieceType, Move } from "../types";
+import { PieceType, Position } from "../types";
+import { Board } from './board.model';
 
 export abstract class Piece {
   x: number;
@@ -13,12 +14,12 @@ export abstract class Piece {
 
   color: "black" | "white";
 
-  constructor(public boardService: any) {}
+  constructor(public boardService: Board) { }
 
-  move({ x, y }: Move) {
+  move({ x, y }: Position) {
     this.x = x;
     this.y = y;
   }
 
-  abstract findMoves(): Move[];
+  abstract findPositions(): Position[];
 }

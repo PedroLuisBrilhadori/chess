@@ -1,2 +1,2 @@
-export * from "./move.type";
+export * from "./position.type";
 export * from "./piece.type";
