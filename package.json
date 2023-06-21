@@ -1,0 +1,19 @@
+{
+  "name": "xadrez",
+  "version": "1.0.0",
+  "description": "um jogo de xadrez feito com fastify + react",
+  "main": "src/main.ts",
+  "author": "PedroLuisBrilhadori",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "tsx watch ./src/main.ts"
+  },
+  "dependencies": {
+    "fastify": "^4.18.0"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.3"
+  }
+}
