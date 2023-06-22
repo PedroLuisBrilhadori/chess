@@ -1,4 +1,5 @@
 import { Color, PieceType, Position } from "../types";
+import { Board } from "./board.model";
 
 export type CreatePiece = Pick<Piece, "x" | "y" | "color">;
 
@@ -33,5 +34,5 @@ export abstract class Piece {
     };
   }
 
-  abstract findPositions(): Position[];
+  abstract findPositions(board: Board): Position[];
 }

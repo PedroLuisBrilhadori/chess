@@ -1,13 +1,11 @@
 import chalk from "chalk";
-import { Position, Square } from "../types";
+import { Color, Position, Square } from "../types";
 import { Piece } from "./piece.model";
 
 export class Board {
   square: Square<Piece | null> = [];
 
   size: number = 8;
-
-  deaths: Piece[] = [];
 
   constructor(pieces: Piece[], size?: number) {
     if (size) this.size = size;
@@ -16,36 +14,55 @@ export class Board {
     this.fillSquares(pieces);
   }
 
-  move(piece: Piece, move: Position) {
-    if (!this.availablePosition(piece, move)) return console.log("unvailable");
+  getPosition({ x, y }: Position) {
+    const position = this.square[y][x];
 
-    const position = this.getPosition(move);
+    return position;
+  }
 
-    if (position) this.kill(position);
-
-    piece.move(move);
+  removePosition({ x, y }: Position) {
+    this.square[y][x] = null;
   }
 
   availablePosition(piece: Piece, move: Position) {
-    const position = this.getPosition(move);
+    const possibleMoviment = this.getPosition(move);
 
-    if (!position) return true;
+    if (!possibleMoviment) return true;
 
-    if (position.color !== piece.color) return true;
+    if (possibleMoviment.color !== piece.color) return true;
 
     return false;
   }
 
-  kill(piece: Piece) {
-    this.deaths.push(piece);
-    this.removePosition({ x: piece.x, y: piece.y });
+  move(piece: Piece, { x, y }: Position) {
+    if (!this.availablePosition(piece, { x, y })) return;
+
+    piece.move({ x, y });
+    this.square[y][x] = piece;
+  }
+
+  getPieces(color: Color) {
+    const pieces: Piece[] = [];
+
+    for (const ranks of this.square) {
+      const filtered = ranks.filter((piece) => {
+        if (piece === null) return;
+        if (piece.color === color) return piece;
+      }) as Piece[];
+
+      pieces.push(...filtered);
+    }
+
+    return pieces;
   }
 
   outPut() {
     let string: string[] = "\t\t BOARD \n".split("");
 
+    string.push("\n__0____1____2____3____4____5____6____7__");
+    string.push(`\n________________________________________\n`);
+    let i = 0;
     for (const ranks of this.square) {
-      string.push("\n________________________________________\n");
       ranks.forEach((files) => {
         if (files !== null) {
           string.push(chalk.green(`| ${files.type} |`));
@@ -53,30 +70,13 @@ export class Board {
           string.push(`| 0 |`);
         }
       });
+
+      string.push(`| ${i} \n________________________________________ \n`);
+
+      i++;
     }
 
-    string.push("\n________________________________________\n");
-
     return string.join("");
-  }
-
-  private getPosition({ x, y }: Position) {
-    const position = this.square[y][x];
-
-    if (position === undefined)
-      throw new Error(
-        `the position x: ${x}, y: ${y} \n exceeded the size ${this.size}X${this.size} of the board`
-      );
-
-    return position;
-  }
-
-  private removePosition({ x, y }: Position) {
-    const position = this.getPosition({ x, y });
-
-    this.square[y][x] = null;
-
-    return position;
   }
 
   private setupSquares() {
