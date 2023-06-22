@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { Position, Square } from "../types";
 import { Piece } from "./piece.model";
 
@@ -8,15 +9,15 @@ export class Board {
 
   deaths: Piece[] = [];
 
-  constructor(size?: number) {
+  constructor(pieces: Piece[], size?: number) {
     if (size) this.size = size;
 
     this.setupSquares();
-    this.fillSquares();
+    this.fillSquares(pieces);
   }
 
   move(piece: Piece, move: Position) {
-    if (!this.availablePosition(piece, move)) return;
+    if (!this.availablePosition(piece, move)) return console.log("unvailable");
 
     const position = this.getPosition(move);
 
@@ -47,7 +48,7 @@ export class Board {
       string.push("\n________________________________________\n");
       ranks.forEach((files) => {
         if (files !== null) {
-          string.push(`| ${files.type} |`);
+          string.push(chalk.green(`| ${files.type} |`));
         } else {
           string.push(`| 0 |`);
         }
@@ -67,7 +68,7 @@ export class Board {
         `the position x: ${x}, y: ${y} \n exceeded the size ${this.size}X${this.size} of the board`
       );
 
-    return this.square[y][x];
+    return position;
   }
 
   private removePosition({ x, y }: Position) {
@@ -84,11 +85,17 @@ export class Board {
     }
   }
 
-  private fillSquares() {
+  private fillSquares(pieces: Piece[]) {
     for (let i = 0; i < this.size; i++) {
       for (let k = 0; k < this.size; k++) {
         this.square[i][k] = null;
       }
     }
+
+    pieces.forEach((piece) => {
+      const { x, y } = piece.getPosition();
+
+      this.square[y][x] = piece;
+    });
   }
 }
