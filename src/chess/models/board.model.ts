@@ -10,8 +10,8 @@ export class Board {
   constructor(pieces: Piece[], size?: number) {
     if (size) this.size = size;
 
-    this.setupSquares();
-    this.fillSquares(pieces);
+    this.setupSquare();
+    this.fillSquare(pieces);
   }
 
   getPosition({ x, y }: Position) {
@@ -24,7 +24,7 @@ export class Board {
     this.square[y][x] = null;
   }
 
-  availablePosition(piece: Piece, move: Position) {
+  availableMoviment(piece: Piece, move: Position) {
     const possibleMoviment = this.getPosition(move);
 
     if (!possibleMoviment) return true;
@@ -35,7 +35,7 @@ export class Board {
   }
 
   move(piece: Piece, { x, y }: Position) {
-    if (!this.availablePosition(piece, { x, y })) return;
+    if (!this.availableMoviment(piece, { x, y })) return;
 
     piece.move({ x, y });
     this.square[y][x] = piece;
@@ -79,13 +79,13 @@ export class Board {
     return string.join("");
   }
 
-  private setupSquares() {
+  private setupSquare(): void {
     for (let i = 0; i < this.size; i++) {
       this.square[i] = [];
     }
   }
 
-  private fillSquares(pieces: Piece[]) {
+  private fillSquare(pieces: Piece[]): void {
     for (let i = 0; i < this.size; i++) {
       for (let k = 0; k < this.size; k++) {
         this.square[i][k] = null;
