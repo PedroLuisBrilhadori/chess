@@ -26,5 +26,12 @@ export abstract class Piece {
     this.y = y;
   }
 
+  getPosition(): Position {
+    return {
+      x: this.x,
+      y: this.y,
+    };
+  }
+
   abstract findPositions(): Position[];
 }
