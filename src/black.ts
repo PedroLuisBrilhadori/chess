@@ -1,4 +1,4 @@
-import { Pawn, Rook } from "./chess/pieces";
+import { Bishop, King, Knigth, Pawn, Queen, Rook } from "./chess/";
 
 const color = "black";
 
@@ -18,4 +18,21 @@ const rooks = [
   new Rook({ y: 0, x: 7, color }),
 ];
 
-export const blackPieces = [...pawns, ...rooks];
+const knights = [
+  new Knigth({ y: 0, x: 1, color }),
+  new Knigth({ y: 0, x: 6, color }),
+];
+
+const bishops = [
+  new Bishop({ y: 0, x: 2, color }),
+  new Bishop({ y: 0, x: 5, color }),
+];
+
+export const blackPieces = [
+  ...pawns,
+  ...rooks,
+  ...knights,
+  ...bishops,
+  new King({ y: 0, x: 4, color }),
+  new Queen({ y: 0, x: 3, color }),
+];
