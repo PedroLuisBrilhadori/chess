@@ -1,20 +1,25 @@
-import { PieceType, Position } from "../types";
-import { Board } from './board.model';
+import { Color, PieceType, Position } from "../types";
+
+export type CreatePiece = Pick<Piece, "x" | "y" | "color">;
 
 export abstract class Piece {
   x: number;
 
   y: number;
 
-  death: boolean;
+  death: boolean = false;
 
-  initial: boolean;
+  initial: boolean = true;
 
   type: PieceType;
 
-  color: "black" | "white";
+  color: Color;
 
-  constructor(public boardService: Board) { }
+  constructor({ x, y, color }: CreatePiece) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+  }
 
   move({ x, y }: Position) {
     this.x = x;

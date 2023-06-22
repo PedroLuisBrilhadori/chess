@@ -1,9 +1,5 @@
-import Fastify from "fastify";
+import { Board } from "./chess/models";
 
-const fastify = Fastify({ logger: true });
+const board = new Board();
 
-fastify.get("/", async (req, res) => {
-  return { hello: "world" };
-});
-
-fastify.listen({ port: 3000 });
+console.log(board.outPut());
