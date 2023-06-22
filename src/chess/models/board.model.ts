@@ -1,18 +1,22 @@
-import { Position } from "../types";
+import { Position, Square } from "../types";
 import { Piece } from "./piece.model";
 
 export class Board {
-  square: Piece[][];
+  square: Square<Piece | undefined>;
 
   deaths: Piece[];
 
   move(piece: Piece, move: Position) {
     if (!this.availablePosition(piece, move)) return;
 
+    const position = this.getPosition(move);
+
+    if (position) this.kill(position);
+
     piece.move(move);
   }
 
-  availablePosition(piece: Piece, move: Position): boolean {
+  availablePosition(piece: Piece, move: Position) {
     const position = this.getPosition(move);
 
     if (!position) return true;
@@ -24,14 +28,19 @@ export class Board {
 
 
   kill(piece: Piece) {
-
+    this.deaths.push(piece);
+    this.removePosition({ x: piece.x, y: piece.y })
   }
 
-  private getPosition({ x, y }: Position): Piece {
+  private getPosition({ x, y }: Position) {
     return this.square[y][x];
   }
 
-  private RemovePosition({ x, y }: Position) {
+  private removePosition({ x, y }: Position) {
+    const position = this.getPosition({ x, y });
 
+    this.square[y][x] = undefined;
+
+    return position;
   }
 }
