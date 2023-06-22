@@ -33,6 +33,8 @@ export class Player {
 
     if (!piece) return [];
 
+    if (piece.color !== this.color) return [];
+
     this.piece = piece;
 
     this.positions = piece.findPositions(this.board);

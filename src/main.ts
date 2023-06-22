@@ -11,13 +11,21 @@ const whitePlayer = new Player({
   board,
 });
 
-const response = whitePlayer.pickPiece({
-  x: 1,
-  y: 6,
+const blackPlayer = new Player({
+  name: "blacker",
+  color: "black",
+  pieces: blackPieces,
+  board,
 });
 
-console.log(`input: `, { x: 1, y: 6 });
-console.log(`response: `, whitePlayer.positions);
+const input = { x: 1, y: 6 };
+
+whitePlayer.pickPiece(input);
+blackPlayer.pickPiece(input);
+
+console.log(`input: `, input);
+console.log(`white response: `, whitePlayer.positions);
+console.log(`black response: `, blackPlayer.positions);
 console.log("\n\n");
 
 console.log(board.outPut());
