@@ -1,31 +1,27 @@
-import { blackPieces } from "./black";
-import { whitePieces } from "./white";
-import { Board, Player } from "./chess/";
+import chalk from "chalk";
+import dotenv from "dotenv";
+import { ExpressInstance, chessRoutes } from "./api";
 
-const board = new Board([...blackPieces, ...whitePieces]);
+dotenv.config();
 
-const whitePlayer = new Player({
-  name: "whiter",
-  color: "white",
-  pieces: whitePieces,
-  board,
-});
+export const start = async () => {
+  const { PORT } = process.env;
 
-const blackPlayer = new Player({
-  name: "blacker",
-  color: "black",
-  pieces: blackPieces,
-  board,
-});
+  try {
+    const app = ExpressInstance();
 
-const input = { x: 1, y: 6 };
+    app.use("/api", await chessRoutes());
 
-whitePlayer.pickPiece(input);
-blackPlayer.pickPiece(input);
+    const port = PORT || 3000;
 
-console.log(`input: `, input);
-console.log(`white response: `, whitePlayer.positions);
-console.log(`black response: `, blackPlayer.positions);
-console.log("\n\n");
+    app.listen(port, () => {
+      const prefix = `${chalk.blue("[API]")} ${chalk.green("|")}`;
+      const url = `http://localhost:${port}`;
 
-console.log(board.outPut());
+      console.log(`${prefix} A API foi iniciada com sucesso!`);
+      console.log(`${prefix} ${url}`);
+    });
+  } catch (error) {}
+};
+
+start();
