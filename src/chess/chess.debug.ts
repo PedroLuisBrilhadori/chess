@@ -1,6 +1,6 @@
 import { blackPieces } from "./black";
 import { whitePieces } from "./white";
-import { Board, Player } from "./chess/";
+import { Board, Player } from ".";
 
 const board = new Board([...blackPieces, ...whitePieces]);
 
