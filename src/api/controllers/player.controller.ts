@@ -1,16 +1,21 @@
 import { ExpressRequestAPI } from "../types";
 import { PlayerService } from "../services";
-import { Controller, Post } from "../../lib";
+import { Controller, Post, ValidationPipe } from "../../lib";
+import { Body } from "../../lib/express/decorators/body.decorator";
+import { CreatePlayerDto } from "../dto";
 
 @Controller("player")
 export class PlayerController {
   constructor(private service: PlayerService) {}
 
   @Post("/start")
-  startGame({ request, response }: ExpressRequestAPI) {
-    const { name } = request.body;
+  // @ts-ignore
+  async startGame(@Body() dto: CreatePlayerDto) {
+    const isValid = await ValidationPipe(CreatePlayerDto, dto);
 
-    response.json({ name });
+    if (isValid.length > 0) return isValid;
+
+    return dto;
   }
 
   @Post("/stop")

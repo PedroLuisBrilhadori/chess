@@ -3,3 +3,8 @@ export enum Keys {
   Post = "post",
   Get = "get",
 }
+
+export enum Params {
+  Body = "body",
+  Query = "query",
+}
