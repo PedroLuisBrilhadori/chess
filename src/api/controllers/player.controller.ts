@@ -1,7 +1,5 @@
-import { ExpressRequestAPI } from "../types";
 import { PlayerService } from "../services";
-import { Controller, Post, ValidationPipe } from "../../lib";
-import { Body } from "../../lib/express/decorators/body.decorator";
+import { Controller, Post, ValidationPipe, Body, Query } from "../../lib";
 import { CreatePlayerDto } from "../dto";
 
 @Controller("player")
@@ -10,16 +8,18 @@ export class PlayerController {
 
   @Post("/start")
   // @ts-ignore
-  async startGame(@Body() dto: CreatePlayerDto) {
+  async startGame(@Body() dto: CreatePlayerDto, @Query() query) {
     const isValid = await ValidationPipe(CreatePlayerDto, dto);
 
     if (isValid.length > 0) return isValid;
 
-    return dto;
+    return { dto, query };
   }
 
   @Post("/stop")
-  stopGame({ request, response }: ExpressRequestAPI) {}
+  stopGame() {
+    return "stop";
+  }
 
   @Post("/pick")
   pickPiece({ request, response }: ExpressRequestAPI) {}
