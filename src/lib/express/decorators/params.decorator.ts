@@ -5,6 +5,7 @@ import { baseReturn } from "./base.decorator";
 export type ParamMetadata = {
   key: Params;
   param?: string;
+  index: number;
 };
 
 export const ParamDecorator = (key: Params) => (param?: string) =>

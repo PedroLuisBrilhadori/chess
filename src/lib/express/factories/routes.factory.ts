@@ -37,19 +37,11 @@ export class RouterGenerator<Controller extends Object> {
   make() {
     for (const prop of this.properties)
       for (const request of this.requests) {
-        const path = this.getMetadata(request, prop);
+        const path = this.getMetadata(request, prop)?.data;
 
         if (path === undefined || typeof path !== "string") continue;
 
-        const params: any = [];
-
-        for (const paramKey of this.params) {
-          const metadata = this.getMetadata(paramKey, prop);
-
-          if (metadata === undefined) continue;
-
-          params.push(metadata);
-        }
+        const params: any = this.getParams(prop);
 
         this.makeRoute({ request, prop, path, params });
       }
@@ -80,7 +72,27 @@ export class RouterGenerator<Controller extends Object> {
   }
 
   private getMetadata(key: string, target: any) {
-    return this.reflect.getMetadata(key, this.controllerPrototype, target);
+    const metadata = this.reflect.getMetadata(
+      key,
+      this.controllerPrototype,
+      target
+    );
+
+    return metadata;
+  }
+
+  private getParams(prop: string) {
+    const params: any = [];
+
+    for (const paramKey of this.params) {
+      const metadata = this.getMetadata(paramKey, prop);
+
+      if (metadata === undefined) continue;
+
+      params[metadata.index] = metadata.data;
+    }
+
+    return params;
   }
 
   private makeRoute(createRoute: CreateRoute) {
@@ -96,19 +108,17 @@ export class RouterGenerator<Controller extends Object> {
     prop,
   }: Omit<CreateRoute, "params">) {
     this.router[request](path, async (req: Request, res: Response) => {
-      /* c8 ignore next 1 */
       return res.json(await this.controller[prop]());
     });
   }
 
   private makeParamRoute({ request, path, prop, params }: CreateRoute) {
     this.router[request](path, async (req: Request, res: Response) => {
-      /* c8 ignore next 8 */
       const args = params?.map(({ key, param }) => {
-        if (key === Params.Response) return param ? req[param] : res;
-        if (key === Params.Request) return param ? res[param] : res;
-        if (key === Params.Body) return param ? req.body[param] : req.body;
-        if (key === Params.Query) return param ? req.query[param] : req.query;
+        if (key === Params.Response) return param ? res[param] : res;
+        if (key === Params.Request) return param ? req[param] : req;
+
+        return param ? req[key][param] : req[key];
       });
 
       return res.json(await this.controller[prop](...args));

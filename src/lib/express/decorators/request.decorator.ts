@@ -2,7 +2,7 @@ import { Requests } from "../types/";
 import { baseReturn } from "./base.decorator";
 
 export const RequestDecorator = (key: Requests) => (path?: string) =>
-  baseReturn<string>({
+  baseReturn({
     key,
     data: path || "",
   });

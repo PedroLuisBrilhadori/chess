@@ -18,8 +18,13 @@ import { ReflectMetadata } from "../../../types";
 @Controller("mock")
 export class MockController {
   @Post()
-  create(@Body() dto) {
-    return "create";
+  create(@Query() query, @Body() body, @Req() req, @Res() res) {
+    return {
+      body,
+      query,
+      req,
+      res,
+    };
   }
 
   @Get()
@@ -38,28 +43,18 @@ export class MockController {
   }
 
   @Patch(":id")
-  patch(@Query("id") id, @Body() dto) {
-    return "patch";
+  patch(
+    @Query("name") query,
+    @Body("name") body,
+    @Res("json") res,
+    @Req("body") req
+  ) {
+    return { query, body, res, req };
   }
 
   @Put(":id")
   put(@Query("id") id, @Body() dto) {
     return "put";
-  }
-
-  @Get("other")
-  getOther(@Res() res: Response) {
-    return "getOther";
-  }
-
-  @Post("other")
-  postOther(@Req() req: Request) {
-    return "postOther";
-  }
-
-  @Delete("other")
-  deleteOther(@Req() req: Request, @Res() res: Response) {
-    return "deleteOther";
   }
 
   @All("testing")
@@ -69,21 +64,27 @@ export class MockController {
 }
 
 export const Routes = {
-  post: ["", "other"],
-  get: ["", ":id", "other"],
-  delete: [":id", "other"],
+  post: [""],
+  get: ["", ":id"],
+  delete: [":id"],
   put: [":id"],
   patch: [":id"],
   all: ["testing"],
 };
 
+export const MockRequest = {
+  query: { name: "query" },
+  body: { name: "body" },
+};
+
+export const MockResponse = {
+  json: (data: any) => data,
+};
+
 export const makeTypeRoutes = (type: string) => {
   const { generator } = makeRouterGenerator();
 
-  return generator
-    .make()
-    .stack.filter(({ route }) => route.methods[type])
-    .map(({ route }) => route.path);
+  return generator.make().stack.filter(({ route }) => route.methods[type]);
 };
 
 export class MockReflectMetadata implements ReflectMetadata {
