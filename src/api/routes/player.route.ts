@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { RouterGenerator } from "../../lib";
+import { RouterGenerator } from "@lib/";
 import { PlayerController } from "../controllers/";
 import { PlayerService } from "../services";
 import { PlayerRepository } from "../repositories";

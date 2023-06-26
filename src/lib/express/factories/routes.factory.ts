@@ -1,11 +1,5 @@
 import { Router, Request, Response } from "express";
-import {
-  Classes,
-  Params,
-  Requests,
-  CreateRoute,
-  ReflectMetadata,
-} from "../types";
+import { Params, Requests, CreateRoute, ReflectMetadata } from "../types";
 
 export type CreateRouter<Controller extends Object> = {
   controller: Controller;
@@ -29,7 +23,6 @@ export class RouterGenerator<Controller extends Object> {
 
     this.properties = this.getProperties();
 
-    this.types = this.getEnumKeys(Classes);
     this.requests = this.getEnumKeys(Requests);
     this.params = this.getEnumKeys(Params);
   }
@@ -51,9 +44,7 @@ export class RouterGenerator<Controller extends Object> {
 
   private router: Router;
 
-  private types: string[];
-
-  private requests: string[];
+  private requests: keyof Router;
 
   private params: string[];
 
@@ -107,9 +98,12 @@ export class RouterGenerator<Controller extends Object> {
     path,
     prop,
   }: Omit<CreateRoute, "params">) {
-    this.router[request](path, async (req: Request, res: Response) => {
-      return res.json(await this.controller[prop]());
-    });
+    this.router[request as "post"](
+      path,
+      async (req: Request, res: Response) => {
+        return res.json(await this.controller[prop]());
+      }
+    );
   }
 
   private makeParamRoute({ request, path, prop, params }: CreateRoute) {

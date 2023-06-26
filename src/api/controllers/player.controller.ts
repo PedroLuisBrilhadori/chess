@@ -1,19 +1,17 @@
 import { PlayerService } from "../services";
-import { Controller, Post, ValidationPipe, Body, Query } from "../../lib";
+import { Post, ValidationPipe, Body } from "@lib/";
 import { CreatePlayerDto } from "../dto";
 
-@Controller("player")
 export class PlayerController {
   constructor(private service: PlayerService) {}
 
   @Post("/start")
-  // @ts-ignore
-  async startGame(@Body() dto: CreatePlayerDto, @Query() query) {
+  async startGame(@Body() dto: CreatePlayerDto) {
     const isValid = await ValidationPipe(CreatePlayerDto, dto);
 
     if (isValid.length > 0) return isValid;
 
-    return { dto, query };
+    return { dto };
   }
 
   @Post("/stop")
@@ -22,8 +20,8 @@ export class PlayerController {
   }
 
   @Post("/pick")
-  pickPiece({ request, response }: ExpressRequestAPI) {}
+  pickPiece() {}
 
   @Post("/move")
-  move({ request, response }: ExpressRequestAPI) {}
+  move() {}
 }

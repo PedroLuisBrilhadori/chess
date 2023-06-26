@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {
-  Controller,
   Post,
   Body,
   Get,
@@ -15,10 +14,14 @@ import {
 import { RouterGenerator } from "../../../factories";
 import { ReflectMetadata } from "../../../types";
 
-@Controller("mock")
 export class MockController {
   @Post()
-  create(@Query() query, @Body() body, @Req() req, @Res() res) {
+  create(
+    @Query() query: any,
+    @Body() body: any,
+    @Req() req: any,
+    @Res() res: any
+  ) {
     return {
       body,
       query,
@@ -33,27 +36,27 @@ export class MockController {
   }
 
   @Get(":id")
-  findOne(@Query("max") id: any) {
+  findOne() {
     return "findOne";
   }
 
   @Delete(":id")
-  delete(@Query("id") id: any) {
+  delete() {
     return "delete";
   }
 
   @Patch(":id")
   patch(
-    @Query("name") query,
-    @Body("name") body,
-    @Res("json") res,
-    @Req("body") req
+    @Query("name") query: any,
+    @Body("name") body: any,
+    @Res("json") res: any,
+    @Req("body") req: any
   ) {
     return { query, body, res, req };
   }
 
   @Put(":id")
-  put(@Query("id") id, @Body() dto) {
+  put() {
     return "put";
   }
 
