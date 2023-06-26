@@ -27,22 +27,22 @@ export class MockController {
     return "findAll";
   }
 
-  @Get("/:id")
+  @Get(":id")
   findOne(@Query("max") id: any) {
     return "findOne";
   }
 
-  @Delete("/:id")
+  @Delete(":id")
   delete(@Query("id") id: any) {
     return "delete";
   }
 
-  @Patch("/:id")
+  @Patch(":id")
   patch(@Query("id") id, @Body() dto) {
     return "patch";
   }
 
-  @Put("/:id")
+  @Put(":id")
   put(@Query("id") id, @Body() dto) {
     return "put";
   }
@@ -67,6 +67,24 @@ export class MockController {
     return "testing";
   }
 }
+
+export const Routes = {
+  post: ["", "other"],
+  get: ["", ":id", "other"],
+  delete: [":id", "other"],
+  put: [":id"],
+  patch: [":id"],
+  all: ["testing"],
+};
+
+export const makeTypeRoutes = (type: string) => {
+  const { generator } = makeRouterGenerator();
+
+  return generator
+    .make()
+    .stack.filter(({ route }) => route.methods[type])
+    .map(({ route }) => route.path);
+};
 
 export class MockReflectMetadata implements ReflectMetadata {
   getMetadata(key: string, target: any, propertyKey: any) {
