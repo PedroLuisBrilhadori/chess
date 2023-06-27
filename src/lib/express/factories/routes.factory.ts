@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Params, Requests, CreateRoute, ReflectMetadata } from "../types";
+import { BaseError, InternalServerException } from "../errors";
 
 export type CreateRouter<Controller extends Object> = {
   controller: Controller;
@@ -44,7 +45,7 @@ export class RouterGenerator<Controller extends Object> {
 
   private router: Router;
 
-  private requests: keyof Router;
+  private requests: string[];
 
   private params: string[];
 
@@ -98,12 +99,18 @@ export class RouterGenerator<Controller extends Object> {
     path,
     prop,
   }: Omit<CreateRoute, "params">) {
-    this.router[request as "post"](
-      path,
-      async (req: Request, res: Response) => {
-        return res.json(await this.controller[prop]());
+    this.router[request](path, async (req: Request, res: Response) => {
+      let response = null;
+
+      try {
+        response = await this.controller[prop]();
+      } catch (error) {
+        if (!(error instanceof BaseError)) response = InternalServerException();
+        else response = error;
       }
-    );
+
+      return res.status(response.status || 200).json(response);
+    });
   }
 
   private makeParamRoute({ request, path, prop, params }: CreateRoute) {
@@ -115,7 +122,16 @@ export class RouterGenerator<Controller extends Object> {
         return param ? req[key][param] : req[key];
       });
 
-      return res.json(await this.controller[prop](...args));
+      let response = null;
+
+      try {
+        response = await this.controller[prop](...args);
+      } catch (error) {
+        if (error instanceof BaseError) response = error;
+        else response = InternalServerException();
+      }
+
+      return res.status(response?.status || 200).json(response);
     });
   }
 }

@@ -82,6 +82,7 @@ export const MockRequest = {
 
 export const MockResponse = {
   json: (data: any) => data,
+  status: (status: number) => MockResponse,
 };
 
 export const makeTypeRoutes = (type: string) => {
