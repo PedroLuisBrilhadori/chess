@@ -3,17 +3,26 @@ import { CreatePlayerDto } from "../dto";
 import { Player } from "../../chess/models";
 
 export class PlayerService {
-  constructor(private repository: PlayerRepository) {}
+  constructor(private repository: PlayerRepository) { }
 
-  createPlayer(dto: CreatePlayerDto) {
+  create(dto: CreatePlayerDto) {
     const player = new Player(dto);
 
     return this.repository.save(player);
   }
 
-  stopGame() {}
+  async find(name: string) {
+    const player = await this.repository.find(name)
 
-  move() {}
+    if (!player) return 'error'
 
-  pickPiece() {}
+
+    return player;
+  }
+
+  stopGame() { }
+
+  move() { }
+
+  pickPiece() { }
 }
