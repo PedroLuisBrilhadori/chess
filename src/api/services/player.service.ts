@@ -1,14 +1,20 @@
 import { PlayerRepository } from "../repositories";
 import { CreatePlayerDto } from "../dto";
 import { Player } from "../../chess/models";
+import { AlreadyExistsException } from "../../lib/express";
 
 export class PlayerService {
   constructor(private repository: PlayerRepository) { }
 
-  create(dto: CreatePlayerDto) {
+  async create(dto: CreatePlayerDto) {
     const player = new Player(dto);
 
-    return this.repository.save(player);
+    try {
+      return await this.repository.save(player);
+    }
+    catch (error) {
+      throw new AlreadyExistsException(`Player: ${dto.name}`);
+    }
   }
 
   async find(name: string) {

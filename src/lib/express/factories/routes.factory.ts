@@ -127,6 +127,7 @@ export class RouterGenerator<Controller extends Object> {
       try {
         response = await this.controller[prop](...args);
       } catch (error) {
+        console.log('error', error)
         if (error instanceof BaseError) response = error;
         else response = InternalServerException();
       }

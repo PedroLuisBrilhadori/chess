@@ -6,7 +6,7 @@ export class PlayerRepository {
   constructor() { }
 
   async save(player: Player) {
-    if ((await this.find(player.name)).length > 0) throw Error(`already-exists`);
+    if ((await this.find(player.name)).length > 0) throw new Error(`already-exists`);
 
     this.players.push(player);
 
