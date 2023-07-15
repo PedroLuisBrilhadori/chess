@@ -23,6 +23,7 @@ export const start = async () => {
 
     app.use(vite.middlewares)
 
+    // TODO: create a logic to run this routes in prod
     app.use('*', async (req, res, next) => {
       const url = req.originalUrl;
 
@@ -35,7 +36,7 @@ export const start = async () => {
         template = await vite.transformIndexHtml(url, template)
 
         const { render } = await vite.ssrLoadModule(
-          path.resolve(__dirname + "/web/entry-server.jsx")
+          path.resolve(__dirname + "/web/entry-server.tsx")
         )
 
         const appHtml = await render(url);
