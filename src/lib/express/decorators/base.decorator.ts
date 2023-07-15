@@ -18,3 +18,10 @@ export function baseReturn(metadata: MetadataDecorator) {
     );
   };
 }
+
+
+export function baseReturnClass(metadata: MetadataDecorator) {
+  return (target: any, key?: any) => {
+    Reflect.defineMetadata(metadata.key, metadata.data, target, key);
+  };
+}

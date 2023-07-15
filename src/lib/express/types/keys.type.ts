@@ -1,5 +1,6 @@
 export enum Classes {
-  Controller = "Controller",
+  Controller = "controller",
+  Inject = "inject"
 }
 
 export enum Requests {

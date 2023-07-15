@@ -1,7 +1,8 @@
 import { PlayerService } from "../services";
-import { Post, Get, ValidationPipe, Body, Query } from "@lib/";
+import { Controller, Post, Get, ValidationPipe, Body, Query } from "@lib/";
 import { CreatePlayerDto } from "../dto";
 
+@Controller('/player')
 export class PlayerController {
   constructor(private service: PlayerService) { }
 
