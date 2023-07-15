@@ -1,11 +1,11 @@
-import { Bishop, King, Knigth, Pawn, Queen, Rook } from "./chess/";
+import { Bishop, King, Knigth, Pawn, Queen, Rook } from "./pieces";
 
 const color = "black";
 
 const pawns = [
-  new Pawn({ y: 1, x: 0, color }),
-  new Pawn({ y: 1, x: 1, color }),
-  new Pawn({ y: 1, x: 2, color }),
+  new Pawn({ y: 5, x: 0, color }),
+  new Pawn({ y: 5, x: 1, color }),
+  new Pawn({ y: 5, x: 2, color }),
   new Pawn({ y: 1, x: 3, color }),
   new Pawn({ y: 1, x: 4, color }),
   new Pawn({ y: 1, x: 5, color }),
