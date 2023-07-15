@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { playerRoutes } from "./routes/player.route";
+import { playerRoutes, boardRoutes } from "./routes";
 
 export const chessRoutes = async () => {
   const routes = Router();
 
   routes.use("/player", await playerRoutes());
+  routes.use("/board", await boardRoutes());
 
   return routes;
 };

@@ -2,16 +2,40 @@ import chalk from "chalk";
 import { Color, Position, Square } from "../types";
 import { Piece } from "./piece.model";
 
+export type CreateBoard = Pick<Board, 'name' | 'size' | 'players'>
+
 export class Board {
+  name: string;
+
+  players?: string[];
+
   square: Square<Piece | null> = [];
 
   size: number = 8;
 
-  constructor(pieces: Piece[], size?: number) {
+  constructor(pieces: Piece[], { name, size, players }: CreateBoard) {
     if (size) this.size = size;
 
     this.setupSquare();
     this.fillSquare(pieces);
+
+    this.name = name;
+
+    if (players && this.playersValid(players))
+      this.players = players
+  }
+
+  private playersValid({ length }: string[]) {
+    if (length < 3 || length >= 1) return true
+
+    return false;
+  }
+
+  setPlayers(players: string[]) {
+    if (!this.playersValid(players))
+      throw new Error('Invalid Players')
+
+    this.players = players;
   }
 
   getPosition({ x, y }: Position) {
