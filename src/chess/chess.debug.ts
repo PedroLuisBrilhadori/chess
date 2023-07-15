@@ -2,21 +2,20 @@ import { blackPieces } from "./black";
 import { whitePieces } from "./white";
 import { Board, Player } from ".";
 
-const board = new Board([...blackPieces, ...whitePieces]);
+const board = new Board([...blackPieces, ...whitePieces], { name: 'Test', size: 8 });
 
 const whitePlayer = new Player({
   name: "whiter",
   color: "white",
-  pieces: whitePieces,
-  board,
 });
 
 const blackPlayer = new Player({
   name: "blacker",
   color: "black",
-  pieces: blackPieces,
-  board,
 });
+
+blackPlayer.startGame(board);
+whitePlayer.startGame(board);
 
 const input = { x: 1, y: 6 };
 

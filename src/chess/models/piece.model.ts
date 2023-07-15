@@ -12,7 +12,7 @@ export abstract class Piece {
 
   initial: boolean = true;
 
-  type: PieceType;
+  type: PieceType = PieceType.Pawn;
 
   color: Color;
 

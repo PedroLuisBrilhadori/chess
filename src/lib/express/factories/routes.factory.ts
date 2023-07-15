@@ -99,10 +99,12 @@ export class RouterGenerator<Controller extends Object> {
     path,
     prop,
   }: Omit<CreateRoute, "params">) {
+    // @ts-ignore
     this.router[request](path, async (req: Request, res: Response) => {
       let response = null;
 
       try {
+        // @ts-ignore
         response = await this.controller[prop]();
       } catch (error) {
         if (!(error instanceof BaseError)) response = InternalServerException();
@@ -114,9 +116,12 @@ export class RouterGenerator<Controller extends Object> {
   }
 
   private makeParamRoute({ request, path, prop, params }: CreateRoute) {
+    // @ts-ignore
     this.router[request](path, async (req: Request, res: Response) => {
       const args = params?.map(({ key, param }) => {
+        // @ts-ignore
         if (key === Params.Response) return param ? res[param] : res;
+        // @ts-ignore
         if (key === Params.Request) return param ? req[param] : req;
         if (key === Params.Param) return param ? req.params[param] : req.params;
 
@@ -126,7 +131,8 @@ export class RouterGenerator<Controller extends Object> {
       let response = null;
 
       try {
-        response = await this.controller[prop](...args);
+        // @ts-ignore
+        response = await this.controller[prop as string](...args || []);
       } catch (error) {
         if (error instanceof BaseError) response = error;
         else response = InternalServerException();

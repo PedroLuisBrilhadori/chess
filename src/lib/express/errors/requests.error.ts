@@ -23,7 +23,7 @@ export class NotFoundException extends BaseError {
   resource: string;
 
 
-  constructor(resource: srting) {
+  constructor(resource: string) {
     const error = `The resource: ${resource} not found.`;
     const status = 404
 
