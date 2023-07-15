@@ -18,4 +18,14 @@ export class BoardRepository {
   async find(name: string) {
     return this.boards.filter(board => board.name === name)
   }
+
+
+  async findOne(name: string) {
+    const board = await this.find(name)
+
+    if (board.length === 0)
+      throw new Error('not-founded')
+
+    return board[0]
+  }
 }

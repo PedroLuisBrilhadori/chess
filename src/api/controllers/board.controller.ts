@@ -18,6 +18,6 @@ export class BoardController {
 
   @Get("/")
   async findBoard(@Query("name") name: string) {
-    return this.service.find(name);
+    return this.service.findOne(name);
   }
 }
