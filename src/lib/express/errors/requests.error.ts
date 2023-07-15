@@ -18,3 +18,17 @@ export class AlreadyExistsException extends BaseError {
     this.resource = resource;
   }
 }
+
+export class NotFoundException extends BaseError {
+  resource: string;
+
+
+  constructor(resource: srting) {
+    const error = `The resource: ${resource} not found.`;
+    const status = 404
+
+    super({ error, status })
+
+    this.resource = resource
+  }
+}

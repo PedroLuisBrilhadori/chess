@@ -1,5 +1,5 @@
 import { Board } from "@chess/";
-import { AlreadyExistsException } from "@lib/";
+import { AlreadyExistsException, NotFoundException } from "@lib/";
 import { CreateBoardDto } from "../dto";
 import { BoardRepository } from "../repositories/";
 
@@ -22,12 +22,12 @@ export class BoardService {
     return this.repository.find(name);
   }
 
-  findOne(name: string) {
+  async findOne(name: string) {
     try {
-      return this.repository.findOne(name)
+      return await this.repository.findOne(name)
     }
     catch (error) {
-      console.log(error)
+      throw new NotFoundException(`Board ${name}`)
     }
   }
 }

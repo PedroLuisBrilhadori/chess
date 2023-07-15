@@ -14,6 +14,7 @@ export enum Requests {
 export enum Params {
   Body = "body",
   Query = "query",
+  Param = 'param',
   Request = "request",
   Response = "response",
 }

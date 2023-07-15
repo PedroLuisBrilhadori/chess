@@ -1,4 +1,4 @@
-import { Body, Get, Post, Query, ValidationPipe } from "@lib/";
+import { Body, Get, Param, Post, Query, ValidationPipe } from "@lib/";
 import { BoardService } from "../services";
 import { CreateBoardDto } from "../dto";
 
@@ -18,6 +18,11 @@ export class BoardController {
 
   @Get("/")
   async findBoard(@Query("name") name: string) {
-    return this.service.findOne(name);
+    return this.service.find(name);
+  }
+
+  @Get("/:name")
+  async findOneBoard(@Param('name') name: string) {
+    return this.service.findOne(name)
   }
 }

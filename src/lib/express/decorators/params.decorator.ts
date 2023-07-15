@@ -21,6 +21,8 @@ export const Body = ParamDecorator(Params.Body);
 
 export const Query = ParamDecorator(Params.Query);
 
+export const Param = ParamDecorator(Params.Param)
+
 export const Res = ParamDecorator(Params.Response);
 
 export const Req = ParamDecorator(Params.Request);

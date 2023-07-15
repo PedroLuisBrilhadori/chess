@@ -118,6 +118,7 @@ export class RouterGenerator<Controller extends Object> {
       const args = params?.map(({ key, param }) => {
         if (key === Params.Response) return param ? res[param] : res;
         if (key === Params.Request) return param ? req[param] : req;
+        if (key === Params.Param) return param ? req.params[param] : req.params;
 
         return param ? req[key][param] : req[key];
       });
@@ -127,7 +128,6 @@ export class RouterGenerator<Controller extends Object> {
       try {
         response = await this.controller[prop](...args);
       } catch (error) {
-        console.log('error', error)
         if (error instanceof BaseError) response = error;
         else response = InternalServerException();
       }
