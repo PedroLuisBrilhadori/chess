@@ -1,4 +1,4 @@
-import { Bishop, King, Knigth, Pawn, Queen, Rook } from "./chess/";
+import { Bishop, King, Knigth, Pawn, Queen, Rook } from "./pieces";
 
 const color = "black";
 

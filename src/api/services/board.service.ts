@@ -1,4 +1,4 @@
-import { Board } from "@chess/";
+import { Board, blackPieces, whitePieces } from "@chess/";
 import { AlreadyExistsException, NotFoundException } from "@lib/";
 import { CreateBoardDto } from "../dto";
 import { BoardRepository } from "../repositories/";
@@ -7,7 +7,7 @@ export class BoardService {
   constructor(private repository: BoardRepository) { }
 
   async create(dto: CreateBoardDto) {
-    const board = new Board([], dto)
+    const board = new Board([...whitePieces, ...blackPieces], dto)
 
     try {
       return await this.repository.save(board);
